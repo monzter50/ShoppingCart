@@ -4,14 +4,20 @@ import ItemCart from './ItemCart';
 class Header extends Component{
     constructor(props){
         super(props);
-       
+       this.state = {
+           total:this.props.totalAmount
+       }
     }
-    
+    // sumTotal(){
+    //     this.setState((prevState,prevProps) =>({
+    //         total:prevState.total + prevProps.cart.price
+    //     }));
+    // }
     render(){
         return(
             <header className="main-header" >
             <div id="main-nav" className="main-nav">
-                <a to={'/'} className={"navbar-brand "} >Navbar</a>
+                <a to={'/'} className={"navbar-brand "}>Navbar</a>
                
             </div>
             <nav id="navbar" className={"navbar "}>
@@ -46,9 +52,8 @@ class Header extends Component{
                 </ul> 
 
                 <div className="cd-cart-total">
-                {
-
-                    <p>Total <span>$39.96</span></p>
+                {/* {   this.props.totalAmount <= 0 ? <p>Nothing...</p>: */
+                    <p>Total <span>{this.props.totalAmount}</span></p>
                 }
                     
                 </div> 

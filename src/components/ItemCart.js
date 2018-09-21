@@ -27,7 +27,7 @@ class ItemCart extends Component{
                 <div className={"content-cart"}>
                     <span className="cd-qty">qty:{this.props.qty}</span> {this.props.name}
                 </div>
-                <div className="cd-price">${this.props.price}</div>
+                <div className="cd-price">${this.props.price * this.props.qty}</div>
                 <button  onClick={this.removeItems.bind(this,id)} className="cd-item-remove cd-img-replace">Remove</button>
             </li>
         )
