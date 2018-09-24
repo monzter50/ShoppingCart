@@ -231,14 +231,21 @@ select {
   padding: .5em;
 }
 #cd-cart{
-  position: fixed;
-  background:var(--second-color);
-  right:0; 
-  min-height: 100vh;
-  top: 0;
-  padding: 1em;
-  width: 40%;
-  z-index: var(--z-subnormal);
+	position: fixed;
+	background:var(--second-color);
+	right:-45%; 
+	min-height: 100vh;
+	top: 0;
+	z-index: var(--z-subnormal);
+	transition: all .5s;
+	width: 40%;
+}
+
+.show{
+	transform: translateX(-40vw);
+}
+.card-content{
+	padding: 1em;
 }
 .ls-cart-items{
   width: 100%;
@@ -299,7 +306,8 @@ select {
   }
   .navigation-link {
       margin: auto;
-      padding: 1em;
+	  padding: 1em;
+	  cursor: pointer;
   }
   .nav-bg{
       background: var(--dark);

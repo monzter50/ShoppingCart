@@ -4,36 +4,59 @@ import Header from './components/Header';
 class App extends Component {
   constructor(props){
     super(props);
-    this.state={
-      data:[],
-      cart:[],
-      quantity: 1,
-	itemsAdd:0,
-	totalAmount:0,
-	totalAmountItem:0
-    }
-    this.updateQty = this.updateQty.bind(this);
-    this.handleAddToCart= this.handleAddToCart.bind(this);
-    this.handleRemoveProduct = this.handleRemoveProduct.bind(this);
-    this.totalAmount = this.totalAmount.bind(this);
+    
+	this.state={
+		data:[],
+		cart:[],
+		quantity: 1,
+		itemsAdd:0,
+		totalAmount:0,
+		totalAmountItem:0
+	}
+	this.updateQty = this.updateQty.bind(this);
+	this.handleAddToCart= this.handleAddToCart.bind(this);
+	this.handleRemoveProduct = this.handleRemoveProduct.bind(this);
+	this.totalAmount = this.totalAmount.bind(this);
 //     this.totalAmountItem = this.totalAmountItem.bind(this);
   }
   getProducts = () =>{
-   let URL ="https://res.cloudinary.com/sivadass/raw/upload/v1535817394/json/products.json";
-    fetch(URL)
-    .then(result =>{
-      return result.json()
-    })
-    .then(data =>{
-      this.setState({
-        data:data
-      })
-    })
-    .catch(err=>{
-      console.log(err);
-    })
+	let URL ="https://res.cloudinary.com/sivadass/raw/upload/v1535817394/json/products.json";
+	fetch(URL)
+	.then(result =>{
+		return result.json()
+	})
+	.then(data =>{
+		this.setState({
+			data:data
+		})
+	})
+	.catch(err=>{
+		console.log(err);
+	})
   }
-
+  saveStateToLocalStorage() {
+	for (let key in this.state) {
+		localStorage.setItem(key, JSON.stringify(this.state[key]));
+	}
+}
+  hydrateStateWithLocalStorage() {
+	// for all items in state
+	for (let key in this.state) {
+	  // if the key exists in localStorage
+		if (localStorage.hasOwnProperty(key)) {
+			// get the key's value from localStorage
+			let value = localStorage.getItem(key);
+			// parse the localStorage string and setState
+			try {
+				value = JSON.parse(value);
+				this.setState({ [key]: value });
+			} catch (e) {
+				// handle empty string
+				this.setState({ [key]: value });
+			}
+		}
+	}
+  }
 
 handleAddToCart(selectedProducts){
 	let cartItem = this.state.cart;
@@ -47,13 +70,9 @@ handleAddToCart(selectedProducts){
 	}else{
 		cartItem.push(selectedProducts);
 	}
-
-	for(let i=0 ; cartItem.length > i ; i++){
-	console.log(`producto:${i}-${cartItem[i].name}- qty: ${cartItem[i].qty}`);
-	}
 	this.setState({itemsAdd:cartItem.length});
 	this.totalAmount(this.state.cart);
-	console.log(`id: ${productID} name: ${productName}`);
+	localStorage.setItem("cart", JSON.stringify(this.state.cart));
 }
 
 updateQty(qty){
@@ -70,38 +89,35 @@ handleRemoveProduct(selectedProducts){
 	}else{
 		return this.state.cart;
 	}
-    console.log(`id: ${productID}`);
-	for(let i=0 ; cartItem.length > i ; i++){
-		console.log(`producto:${i}-${cartItem[i].id}`);
-	}
 	this.setState({itemsAdd:cartItem.length});
 	this.totalAmount(this.state.cart);
+	localStorage.setItem("cart", JSON.stringify(this.state.cart));
 }
 totalAmount(){
-	let cart = this.state.cart;
+	let cart = this.state.cart || localStorage.getItem('cart') ;
 	let sumTotal=0;
 	for(let i = 0 ; cart.length > i ; i++ ) {
 		sumTotal += cart[i].price * cart[i].qty;
 	}
+	console.log(` ${cart}`);
 	this.setState({
 		totalAmount:sumTotal
 	})
-	console.log(`suma total: $ ${this.state.totalAmount}`);
+	// localStorage.setItem("totalAmount", JSON.stringify(this.state.totalAmount));
 }
-// totalAmountItem(){
-// 	let cart = this.state.cart;
-// 	let sumTotal=0;
-// 	let index = cart.findIndex(x => x.id === productID);
-// 	for(let i = 0 ; cart.length > i ; i++ ) {
-// 		sumTotal = cart[i].price * cart[i].qty;
-// 	}
-// 	this.setState({
-// 		totalAmountItem:sumTotal
-// 	})
-// }
+
+componentDidMount(){
+	this.hydrateStateWithLocalStorage();
+}
+
 componentWillMount() {
 	this.getProducts();
 }
+
+componentWillUnmount() {
+	this.saveStateToLocalStorage();
+}
+
 render() {
 	return (
 		<div className="container">
