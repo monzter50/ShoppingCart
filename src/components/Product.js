@@ -28,24 +28,14 @@ class Product extends Component{
         this.setState(
             {
               isAdded: true
-            },
-            // function() {
-            //   setTimeout(() => {
-            //     this.setState({
-            //       isAdded: false,
-            //       selectedProduct: {}
-            //     });
-            //   }, 3500);
-            // }
+            }
         );
     }
     incrementCount(count){
         this.setState(prevState => ({
             qty:prevState.qty + count
-        }),
-        function(){
-            this.props.updateQty(this.state.qty);
-        });
+        }))
+
     }
     decrementCount(count){
         if(this.state.qty <= 1){
@@ -54,18 +44,12 @@ class Product extends Component{
             this.setState(prevState => ({
                 qty:prevState.qty + count
             }),
-                function(){
-                    this.props.updateQty(this.state.qty);
-                }
+
             );
         }
         
     }
-    componentWillUpdate(nextProps, nextState){
-        // console.log(nextState.isSelectItem);
-    }
-    componentWillMount(){
-    }
+
     render(){
 
         let image = this.props.image;

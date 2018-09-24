@@ -1,6 +1,6 @@
 import  React,{Component} from 'react';
-
 import ItemCart from './ItemCart';
+import './Header.css';
 class Header extends Component{
     constructor(props){
         super(props);
@@ -16,11 +16,7 @@ class Header extends Component{
             })
         );
     }
-    // sumTotal(){
-    //     this.setState((prevState,prevProps) =>({
-    //         total:prevState.total + prevProps.cart.price
-    //     }));
-    // }
+
     render(){
         return(
             <header className="main-header" >
@@ -52,7 +48,6 @@ class Header extends Component{
                                         price={itemsCart.price}
                                         removeItems={this.props.removeItems}
                                     />    
-                                
                                 )
                             })
                         

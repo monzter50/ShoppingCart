@@ -9,15 +9,12 @@ class App extends Component {
 		data:[],
 		cart:[],
 		quantity: 1,
-		itemsAdd:0,
-		totalAmount:0,
+        totalAmount:0,
 		totalAmountItem:0
 	}
-	this.updateQty = this.updateQty.bind(this);
 	this.handleAddToCart= this.handleAddToCart.bind(this);
 	this.handleRemoveProduct = this.handleRemoveProduct.bind(this);
 	this.totalAmount = this.totalAmount.bind(this);
-//     this.totalAmountItem = this.totalAmountItem.bind(this);
   }
   getProducts = () =>{
 	let URL ="https://res.cloudinary.com/sivadass/raw/upload/v1535817394/json/products.json";
@@ -62,7 +59,6 @@ handleAddToCart(selectedProducts){
 	let cartItem = this.state.cart;
 	let productID = selectedProducts.id;
 	let productQty = selectedProducts.qty;
-	let productName= selectedProducts.name;
 	let index = cartItem.findIndex(x => x.id === productID);
 	if(cartItem[index]){
 		cartItem[index].qty = cartItem[index].qty + productQty;
@@ -70,14 +66,15 @@ handleAddToCart(selectedProducts){
 	}else{
 		cartItem.push(selectedProducts);
 	}
-	this.setState({itemsAdd:cartItem.length});
+    this.setState(prevState=>({
+        itemsAdd:prevState.cart.length
+    }));
+    console.log(this.state.cart.length);
 	this.totalAmount(this.state.cart);
 	localStorage.setItem("cart", JSON.stringify(this.state.cart));
 }
 
-updateQty(qty){
-	console.log(qty);
-}
+
 
 handleRemoveProduct(selectedProducts){
 	let cartItem = this.state.cart;
@@ -89,40 +86,47 @@ handleRemoveProduct(selectedProducts){
 	}else{
 		return this.state.cart;
 	}
-	this.setState({itemsAdd:cartItem.length});
+	this.setState(prevState=>({
+        itemsAdd:prevState.cart.length
+	}));
+  console.log(this.state.cart.length);
 	this.totalAmount(this.state.cart);
 	localStorage.setItem("cart", JSON.stringify(this.state.cart));
 }
 totalAmount(){
-	let cart = this.state.cart || localStorage.getItem('cart') ;
-	let sumTotal=0;
+	let cart = this.state.cart ;
+	let sumTotal= 0;
 	for(let i = 0 ; cart.length > i ; i++ ) {
+
 		sumTotal += cart[i].price * cart[i].qty;
 	}
 	console.log(` ${cart}`);
 	this.setState({
 		totalAmount:sumTotal
 	})
-	// localStorage.setItem("totalAmount", JSON.stringify(this.state.totalAmount));
+    // localStorage.setItem("totalAmount", JSON.stringify(this.state.totalAmount));
 }
 
 componentDidMount(){
-	this.hydrateStateWithLocalStorage();
-}
-
-componentWillMount() {
-	this.getProducts();
+    this.getProducts();
+    this.hydrateStateWithLocalStorage();
+    console.log("componentDid" + this.state.totalAmount);
+    console.log(this.state.cart);
 }
 
 componentWillUnmount() {
 	this.saveStateToLocalStorage();
 }
-
+    componentWillUpdate(nextProps, nextState){
+        localStorage.setItem('totalAmount',nextState.totalAmount);
+        console.log("WillUpdate currentLanguage "+nextState.totalAmount);
+    }
 render() {
+    console.log(this.state.cart);
 	return (
 		<div className="container">
 			<Header 
-			itemsAdd={this.state.itemsAdd}  
+			itemsAdd={this.state.cart.length}
 			cart={this.state.cart}
 			removeItems={this.handleRemoveProduct}
 			totalAmount={this.state.totalAmount}
@@ -131,7 +135,6 @@ render() {
 			<Products 
 			data={this.state.data}
 			addToCart={this.handleAddToCart}
-			updateQty={this.updateQty}
 			productQuantity={this.state.quantity}
 			/>
 		</div>
