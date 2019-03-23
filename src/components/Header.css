@@ -1,15 +1,24 @@
-.navbar-toggler{
-    border: 0;
-    background: transparent;
-    color: #fff;
-    font-weight: 100;
-    font-size: 1.875rem;
-    position: absolute;
-    top: 20%;
-    right: 20px;
+.navbar {
+    display: -ms-grid;
+    display: grid;
+    right: 0;
+    top: 0;
+    width: auto;
+    height: auto;
+    z-index: var(--z-fixed);
+    position: fixed;
 }
-.navbar-toggler:focus{
-    outline: none;
+.navbar-nav {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 0 .8em .8em 0;
+    -ms-flex-align: center;
+    align-items: center;
+    margin: 0;
 }
 
 .main-nav{
@@ -37,7 +46,7 @@
     right:-45%;
     min-height: 100vh;
     top: 0;
-    z-index: var(--z-fixed);
+    z-index: var(--z-subnormal);
     transition: all .5s;
     width: 40%;
 }
@@ -58,20 +67,20 @@
     width: 100px;
     height: 100px;
 }
+header {
+    display: flex;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-pack: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    z-index: 300;
+    padding-bottom: 5em;
+}
 /* Medias Queries*/
 @media (min-width: 1024px){
 
-    header {
-        display: flex;
-        -ms-flex-direction: row;
-        flex-direction: row;
-        -ms-flex-pack: center;
-        justify-content: center;
-        position: absolute;
-        width: 100%;
-        z-index: 300;
-        padding-bottom: 5em;
-    }
     .main-nav {
         display: -ms-flexbox;
         display: flex;
@@ -82,27 +91,7 @@
     /*.navbar-toggler {*/
         /*display: none;*/
     /*}*/
-    .navbar {
-        display: -ms-grid;
-        display: grid;
-        right: 0;
-        top: 0;
-        width: auto;
-        height: auto;
-        z-index: var(--z-fixed);
-    }
-    .navbar-nav {
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-direction: row;
-        flex-direction: row;
-        -ms-flex-pack: end;
-        justify-content: flex-end;
-        padding: 0 .8em .8em 0;
-        -ms-flex-align: center;
-        align-items: center;
-        margin: 0;
-    }
+ 
     .navigation-item{
         padding: 0;
     }
